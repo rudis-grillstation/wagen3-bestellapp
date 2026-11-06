@@ -61,6 +61,7 @@ $('submit').onclick=async()=>{
   $('phone').value='';
   $('company').value='';
   $('testagree').checked=false;
+  Object.keys(quantities).forEach(id => { quantities[id] = 0; });
  }catch(err){
   r.className='notice';
   r.textContent='Übertragung nicht bestätigt. Bitte vor einem erneuten Versuch in Supabase prüfen, ob die Bestellung angekommen ist.\nFehler: '+(err?.message||'Unbekannter Fehler');
