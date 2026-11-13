@@ -7,7 +7,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{font-size:15px;lin
 /* Kompakte Smartphone-Ansicht V2: Speisekarte früher sichtbar */
 header{padding:9px 13px}header .muted{font-size:13px;line-height:1.25}h1{font-size:clamp(22px,5.5vw,25px);margin:2px 0 4px}main{padding-top:7px}.notice{padding:7px 10px;font-size:12px;line-height:1.32}.notice strong{font-size:12px}.card{padding:10px 12px;margin:8px 0}h2{font-size:19px;margin:0 0 7px}label{font-size:13px}select,input{padding:9px 10px;margin:4px 0 7px;font-size:16px}.card>.tiny{margin:0;line-height:1.3}.product{padding:8px 0}.qty button{min-width:36px;min-height:36px}
 @media(max-width:390px){header{padding:8px 12px}h1{font-size:22px}.card{padding:9px 11px}h2{font-size:18px}.notice{font-size:12px}}
-</style></head><body><header><div style="max-width:740px;margin:auto"><span class="tag">RUDI'S GRILLSTATION · PILOT</span><h1>Vorbestellen. Abholen. Genießen.</h1><div class="muted">Spar dir den Stress – nimm den Express.</div></div></header><main><div class="notice"><strong>TESTBETRIEB · Keine Kundenbestellungen</strong><br>Testbestellungen werden an die Supabase-Testdatenbank gesendet. Keine Abholung und keine Bezahlung.</div><section class="card"><h2>1. Verkaufsplatz wählen</h2><label for="day">Abholtag</label><select id="day"></select><label for="location">Verkaufsplatz</label><select id="location"><option value="">Bitte Verkaufsplatz auswählen</option></select><p id="dayNotice" class="notice" role="status"></p><p class="muted tiny">Technischer Test – keine echte Abholung.</p></section><section class="card"><h2>2. Speisen auswählen</h2><div id="products"></div></section><section class="card"><h2>3. Abholung und Kontakt</h2><label for="pickup">Abholzeit (10-Minuten-Takt)</label><select id="pickup"><option value="">Bitte wählen</option></select><label for="phone">Test-Telefonnummer (Pflichtfeld)</label><input id="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" required placeholder="z. B. 0176 12345678"><p class="muted tiny">Bitte ausschließlich eine erfundene Testnummer verwenden (z. B. 0123456789). Die Testnummer wird in Supabase gespeichert. Keine echten personenbezogenen Daten eingeben.</p><label for="company">Firma (optional)</label><input id="company" maxlength="80" placeholder="Firma / Abteilung"><p class="muted tiny">Die Zeitfenster sind noch nicht mit Kapazität oder Öffnungszeiten verbunden.</p></section><section class="card"><h2>4. Warenkorb</h2><div id="orderSummary" class="muted">Noch keine Artikel ausgewählt.</div><hr style="border:0;border-top:1px solid #444;margin:14px 0"><div class="row"><strong>Gesamt</strong><span class="total" id="total">0,00 €</span></div><p class="muted tiny">Aktionen und Rabatte werden später zentral freigeschaltet. In dieser Testversion wird noch kein Rabatt abgezogen.</p><div class="notice"><strong>TEST – Keine Zahlung und keine Abholung</strong><br>Der Klick erzeugt einen Datensatz in der Supabase-Testdatenbank. Es wird keine Zahlung ausgelöst und kein Essen bereitgestellt.</div><label class="check"><input type="checkbox" id="testagree">Ich bestätige: Das ist nur eine Testbestellung mit erfundenen Kontaktdaten.</label><button class="full" style="margin-top:16px" id="submit">Testbestellung an Supabase senden</button><div id="result" class="hidden" style="margin-top:14px"></div></section><div class="footer">Rudi's Grillstation · Technischer Test · Keine Kundenbestellungen · V1.11 – 12 Standorte · Supabase-Test</div></main><script>
+</style></head><body><header><div style="max-width:740px;margin:auto"><span class="tag">RUDI'S GRILLSTATION · PILOT</span><h1>Vorbestellen. Abholen. Genießen.</h1><div class="muted">Spar dir den Stress – nimm den Express.</div></div></header><main><div class="notice"><strong>TESTBETRIEB · Keine Kundenbestellungen</strong><br>Testbestellungen werden an die Supabase-Testdatenbank gesendet. Keine Abholung und keine Bezahlung.</div><section class="card"><h2>1. Verkaufsplatz wählen</h2><label for="day">Abholtag</label><select id="day"></select><label for="location">Verkaufsplatz</label><select id="location"><option value="">Bitte Verkaufsplatz auswählen</option></select><p id="dayNotice" class="notice" role="status"></p><p class="muted tiny">Technischer Test – keine echte Abholung.</p></section><section class="card"><h2>2. Speisen auswählen</h2><div id="products"></div></section><section class="card"><h2>3. Abholung und Kontakt</h2><label for="pickup">Abholzeit (10-Minuten-Takt)</label><select id="pickup"><option value="">Bitte wählen</option></select><label for="phone">Test-Telefonnummer (Pflichtfeld)</label><input id="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" required placeholder="z. B. 0176 12345678"><p class="muted tiny">Bitte ausschließlich eine erfundene Testnummer verwenden (z. B. 0123456789). Die Testnummer wird in Supabase gespeichert. Keine echten personenbezogenen Daten eingeben.</p><label for="company">Firma (optional)</label><input id="company" maxlength="80" placeholder="Firma / Abteilung"><p class="muted tiny">Die Zeitfenster berücksichtigen den Bestellschluss um 18 Uhr und die ALBW-Sonderzeit; eine Kapazitätsbegrenzung ist noch nicht eingerichtet.</p></section><section class="card"><h2>4. Warenkorb</h2><div id="orderSummary" class="muted">Noch keine Artikel ausgewählt.</div><hr style="border:0;border-top:1px solid #444;margin:14px 0"><div class="row"><strong>Gesamt</strong><span class="total" id="total">0,00 €</span></div><p class="muted tiny">Aktionen und Rabatte werden später zentral freigeschaltet. In dieser Testversion wird noch kein Rabatt abgezogen.</p><div class="notice"><strong>TEST – Keine Zahlung und keine Abholung</strong><br>Der Klick erzeugt einen Datensatz in der Supabase-Testdatenbank. Es wird keine Zahlung ausgelöst und kein Essen bereitgestellt.</div><label class="check"><input type="checkbox" id="testagree">Ich bestätige: Das ist nur eine Testbestellung mit erfundenen Kontaktdaten.</label><button class="full" style="margin-top:16px" id="submit">Testbestellung an Supabase senden</button><div id="result" class="hidden" style="margin-top:14px"></div></section><div class="footer">Rudi's Grillstation · Technischer Test · Keine Kundenbestellungen · V1.11 Zeitregeln – 12 Standorte · Supabase-Test</div></main><script>
 'use strict';const menu=[{id:'haehnchen',name:'½ Grillhähnchen',price:650,icon:'🍗'},{id:'currywurst',name:'Currywurst',price:450,icon:'🌭'},{id:'pommes',name:'Pommes',price:360,icon:'🍟'},{id:'spiessbraten',name:'Pfälzer Spießbraten',price:450,icon:'🥩'},{id:'dampfnudel',name:'Dampfnudel',price:230,icon:'🥟'}];const quantities=Object.fromEntries(menu.map(x=>[x.id,0]));const euro=n=>(n/100).toLocaleString('de-DE',{style:'currency',currency:'EUR'});const $=id=>document.getElementById(id);function render(){const p=$('products');p.replaceChildren();for(const item of menu){const line=document.createElement('div');line.className='product';const emoji=document.createElement('div');emoji.className='emoji';emoji.textContent=item.icon;const info=document.createElement('div');info.className='info';const strong=document.createElement('strong');strong.textContent=item.name;const price=document.createElement('div');price.className='price';price.textContent=euro(item.price);info.append(strong,price);const qty=document.createElement('div');qty.className='qty';const minus=document.createElement('button');minus.className='secondary';minus.textContent='−';minus.setAttribute('aria-label',item.name+' verringern');minus.disabled=!quantities[item.id];minus.onclick=()=>{quantities[item.id]--;render()};const n=document.createElement('span');n.textContent=quantities[item.id];const plus=document.createElement('button');plus.textContent='+';plus.setAttribute('aria-label',item.name+' hinzufügen');plus.onclick=()=>{quantities[item.id]++;render()};qty.append(minus,n,plus);line.append(emoji,info,qty);p.append(line)}const chosen=menu.filter(x=>quantities[x.id]);$('orderSummary').textContent=chosen.length?chosen.map(x=>`${quantities[x.id]} × ${x.name} = ${euro(x.price*quantities[x.id])}`).join('\n'):'Noch keine Artikel ausgewählt.';$('total').textContent=euro(chosen.reduce((s,x)=>s+x.price*quantities[x.id],0))}render();
 function clearOldConfirmation(){
  const r=$('result');
@@ -28,33 +28,71 @@ const localDate=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}
 const germanDate=d=>d.toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
 const dateAt=n=>{const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+n);return d};
 const day=$('day'), locationSelect=$('location'), pickup=$('pickup');
-const now=new Date();
-// Für die Vorschau alle kommenden Verkaufstage der nächsten 14 Tage anbieten.
-// Nach 18 Uhr wird der heutige Tag nicht mehr angeboten.
-for(let n=(now.getHours()>=18?1:0);n<15;n++){
- const d=dateAt(n),tag=tage[d.getDay()];
- if(!standorte.some(s=>s[0]===tag))continue;
- const opt=document.createElement('option');opt.value=localDate(d);opt.textContent=germanDate(d);opt.dataset.tag=tag;day.append(opt);
+// Zeitregeln gelten ausschließlich nach Europe/Berlin.
+const berlinNow=()=>{
+ const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+ const v=Object.fromEntries(parts.map(x=>[x.type,x.value]));
+ return {date:`${v.year}-${v.month}-${v.day}`,minutes:Number(v.hour)*60+Number(v.minute)};
+};
+const orderClosed=()=>berlinNow().minutes>=18*60;
+const isToday=()=>day.value===berlinNow().date;
+function refreshDay(){
+ const today=berlinNow().date;
+ day.replaceChildren();
+ const d=new Date(today+'T12:00:00');
+ const tag=tage[d.getDay()];
+ if(standorte.some(s=>s[0]===tag)){
+  const opt=new Option(germanDate(d),today);opt.dataset.tag=tag;day.add(opt);
+ }else day.add(new Option('Heute kein Verkaufsplatz verfügbar',''));
+ day.disabled=true;
+ refreshLocations();
 }
 function refreshLocations(){
+ const previous=locationSelect.value;
  locationSelect.replaceChildren(new Option('Bitte Verkaufsplatz auswählen',''));
  const tag=day.selectedOptions[0]?.dataset.tag;
- standorte.filter(s=>s[0]===tag).forEach(([_,name],idx)=>{
-  const opt=new Option(name,name);locationSelect.add(opt);
- });
- $('dayNotice').textContent=day.value ? ('Test-Abholung am '+germanDate(new Date(day.value+'T12:00:00'))+'. Nach 18 Uhr ist der heutige Tag nicht mehr buchbar.') : 'Kein Verkaufstag verfügbar.';
+ standorte.filter(s=>s[0]===tag).forEach(([_,name])=>locationSelect.add(new Option(name,name)));
+ if([...locationSelect.options].some(o=>o.value===previous))locationSelect.value=previous;
+ $('dayNotice').textContent=orderClosed()?'Bestellung nur bis 18 Uhr möglich':(day.value?'Bestellungen sind nur für heute möglich.':'Heute kein Verkaufstag verfügbar.');
 }
-function refreshPickup(){pickup.replaceChildren(new Option('Bitte wählen',''));for(let m=11*60+30;m<=14*60+30;m+=10){const t=`${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;pickup.add(new Option(t,t))}}
-refreshLocations();refreshPickup();day.addEventListener('change',()=>{refreshLocations();clearOldConfirmation()});
+function refreshPickup(){
+ const previous=pickup.value;
+ pickup.replaceChildren(new Option('Bitte wählen',''));
+ const now=berlinNow();
+ if(!day.value||day.value!==now.date||now.minutes>=18*60)return;
+ const end=locationSelect.value==='Kirrlach – Firma ALBW [10–14 Uhr]'?13*60+50:18*60+30;
+ for(let m=11*60+30;m<=end;m+=10){
+  if(m<=now.minutes)continue;
+  const t=`${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+  pickup.add(new Option(t,t));
+ }
+ if([...pickup.options].some(o=>o.value===previous))pickup.value=previous;
+}
+function refreshTimeRules(){
+ const oldDay=day.value;
+ if(oldDay!==berlinNow().date)refreshDay();
+ else refreshLocations();
+ refreshPickup();
+ $('submit').disabled=sending||orderClosed()||!day.value;
+}
+refreshDay();refreshPickup();
+locationSelect.addEventListener('change',()=>{refreshPickup();clearOldConfirmation()});
+// Auch bei geöffnetem Bildschirm werden veraltete Zeiten entfernt.
+setInterval(refreshTimeRules,15000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshTimeRules()});
 const FUNCTION_URL='https://xysfnsnvsyulpfzzjhqh.supabase.co/functions/v1/wagen3_bestelleingang';
 let sending=false;
 $('submit').onclick=async()=>{
  if(sending)return;
  const chosen=menu.filter(x=>quantities[x.id]>0);
+  refreshTimeRules();
+  if(orderClosed()){alert('Bestellung nur bis 18 Uhr möglich');return;}
+  if(!isToday()){alert('Bestellungen sind nur für den heutigen Tag möglich.');return;}
  if(!day.value||!locationSelect.value){alert('Bitte Abholtag und Verkaufsplatz wählen.');return;}
  if(!chosen.length){alert('Bitte mindestens einen Artikel auswählen.');return;}
  if(chosen.some(x=>!Number.isInteger(quantities[x.id])||quantities[x.id]<1||quantities[x.id]>30)){alert('Je Artikel höchstens 30 Stück.');return;}
  if(!pickup.value){alert('Bitte eine Abholzeit auswählen.');return;}
+  if(![...pickup.options].some(o=>o.value===pickup.value&&o.value)){alert('Diese Abholzeit ist nicht mehr verfügbar.');return;}
  if(locationSelect.value==='Kirrlach – Firma ALBW [10–14 Uhr]' && pickup.value>='14:00'){
   alert('Bei ALBW ist die Abholung nur vor 14:00 Uhr möglich.');return;
  }
@@ -86,7 +124,7 @@ $('submit').onclick=async()=>{
   r.className='notice';
   r.textContent='Übertragung nicht bestätigt. Bitte vor einem erneuten Versuch in Supabase prüfen, ob die Bestellung angekommen ist.\nFehler: '+(err?.message||'Unbekannter Fehler');
  }finally{
-  sending=false;btn.disabled=false;btn.textContent='Testbestellung an Supabase senden';
+  sending=false;btn.disabled=orderClosed()||!day.value;btn.textContent='Testbestellung an Supabase senden';
   r.scrollIntoView({behavior:'smooth',block:'nearest'});
  }
 };
