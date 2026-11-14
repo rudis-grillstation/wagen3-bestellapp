@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rudi's Grillstation – Verwaltung V1.13</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f4;font-family:Arial,sans-serif;color:#222}
+header{background:#181818;color:white;padding:22px 16px}
+header h1{font-size:23px;margin:0 0 7px}
+header p{margin:0;color:#ddd}
+main{max-width:900px;margin:auto;padding:16px}
+section{background:white;padding:18px;border-radius:12px;margin-bottom:16px}
+h2{font-size:19px;margin:0 0 14px}
+label{display:block;font-weight:bold;margin:12px 0 5px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #aaa;border-radius:7px;font:inherit}
+button{padding:12px 15px;border:0;border-radius:7px;background:#187345;color:white;font-weight:bold;cursor:pointer}
+button:disabled{background:#aaa;cursor:not-allowed}
+.secondary{background:#333}
+.danger{background:#a32929}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.item{border:1px solid #ddd;border-radius:8px;padding:12px;margin:9px 0}
+.item strong{display:block;margin-bottom:5px}
+small{color:#666}
+.notice{background:#fff0c5;border-left:4px solid #d89b00;padding:12px;border-radius:5px}
+</style>
+</head>
+<body>
+<header>
+<h1>🍗 Rudi's Grillstation</h1>
+<p>Speisekarten-Verwaltung V1.13</p>
+</header>
+<main>
+<section>
+<div class="notice">
+<strong>Vorschau – noch keine Speicherung!</strong>
+<p>Diese Seite ist noch nicht mit Supabase verbunden.
+Änderungen gelten nur während dieser Sitzung.</p>
+</div>
+</section>
+
+<section>
+<h2>📂 Kategorien verwalten</h2>
+<div id="kategorien"></div>
+<label for="katName">Neue Kategorie</label>
+<input id="katName" placeholder="z. B. Tagesessen">
+<div class="row">
+<button onclick="kategorieHinzufuegen()">+ Kategorie hinzufügen</button>
+</div>
+</section>
+
+<section>
+<h2>🍟 Produkte verwalten</h2>
+<div id="produkte"></div>
+<h2>Produkt hinzufügen</h2>
+<label for="produktName">Produktname</label>
+<input id="produktName" placeholder="z. B. Currywurst">
+<label for="produktKategorie">Kategorie</label>
+<select id="produktKategorie"></select>
+<label for="produktPreis">Preis in Euro</label>
+<input id="produktPreis" type="number" min="0" step="0.01" placeholder="4.50">
+<label for="produktBeschreibung">Beschreibung</label>
+<textarea id="produktBeschreibung" rows="2"></textarea>
+<div class="row">
+<button onclick="produktHinzufuegen()">+ Produkt hinzufügen</button>
+</div>
+</section>
+</main>
+
+<script>
+let kategorien=[
+"Grillhähnchen & Menüs",
+"Currywurst & Herzhaftes",
+"Burger & Snacks",
+"Beilagen & Vegetarisches",
+"Salate",
+"Weitere Gerichte & Angebote",
+"Tagesangebote"
+];
+
+let produkte=[
+{name:"½ Grillhähnchen",kat:0,cent:650,beschreibung:"",aktiv:true},
+{name:"Currywurst",kat:1,cent:450,beschreibung:"",aktiv:true},
+{name:"Pommes",kat:3,cent:360,beschreibung:"",aktiv:true},
+{name:"Dampfnudel",kat:3,cent:230,beschreibung:"",aktiv:true},
+{name:"Pfälzer Spießbraten",kat:5,cent:450,beschreibung:"",aktiv:true}
+];
+
+function euro(cent){
+return (cent/100).toFixed(2).replace(".",",")+" €";
+}
+function element(tag,text){
+const e=document.createElement(tag);
+e.textContent=text;
+return e;
+}
+function zeichnen(){
+const k=document.getElementById("kategorien");
+const p=document.getElementById("produkte");
+const s=document.getElementById("produktKategorie");
+k.replaceChildren();
+p.replaceChildren();
+s.replaceChildren();
+
+kategorien.forEach((name,i)=>{
+const div=element("div","");
+div.className="item";
+div.append(element("strong",name));
+const b=element("button","Umbenennen");
+b.className="secondary";
+b.onclick=()=>{
+const neu=prompt("Neuer Kategoriename:",name);
+if(neu===null)return;
+if(!neu.trim())return alert("Bitte einen Namen eingeben.");
+kategorien[i]=neu.trim();
+zeichnen();
+};
+div.append(b);
+k.append(div);
+
+const opt=document.createElement("option");
+opt.value=i;
+opt.textContent=name;
+s.append(opt);
+});
+
+produkte.forEach((artikel,i)=>{
+const div=element("div","");
+div.className="item";
+div.append(element("strong",artikel.name));
+div.append(element("small",
+kategorien[artikel.kat]+" · "+euro(artikel.cent)+
+(artikel.aktiv?" · Aktiv":" · Ausgeblendet")));
+div.append(element("p",artikel.beschreibung||""));
+
+const row=element("div","");
+row.className="row";
+
+const preis=element("button","Preis ändern");
+preis.className="secondary";
+preis.onclick=()=>{
+const wert=prompt("Neuer Preis in Euro:",
+(artikel.cent/100).toFixed(2));
+if(wert===null)return;
+const cent=preisZuCent(wert);
+if(cent===null)return alert("Ungültiger Preis.");
+artikel.cent=cent;
+zeichnen();
+};
+
+const sichtbar=element("button",
+artikel.aktiv?"Ausblenden":"Aktivieren");
+sichtbar.className=artikel.aktiv?"danger":"secondary";
+sichtbar.onclick=()=>{
+artikel.aktiv=!artikel.aktiv;
+zeichnen();
+};
+
+const verschieben=element("button","Kategorie ändern");
+verschieben.className="secondary";
+verschieben.onclick=()=>{
+const liste=kategorien.map((n,j)=>j+": "+n).join("\n");
+const eingabe=prompt("Kategorie-Nummer eingeben:\n"+liste,artikel.kat);
+if(eingabe===null)return;
+const nummer=Number(eingabe);
+if(!Number.isInteger(nummer)||nummer<0||nummer>=kategorien.length)
+return alert("Ungültige Kategorie.");
+artikel.kat=nummer;
+zeichnen();
+};
+
+row.append(preis,sichtbar,verschieben);
+div.append(row);
+p.append(div);
+});
+}
+
+function preisZuCent(wert){
+const s=String(wert).trim().replace(",",".");
+if(!/^\d+(\.\d{1,2})?$/.test(s))return null;
+const cent=Math.round(Number(s)*100);
+return Number.isSafeInteger(cent)?cent:null;
+}
+function kategorieHinzufuegen(){
+const input=document.getElementById("katName");
+const name=input.value.trim();
+if(!name)return alert("Bitte Kategorienamen eingeben.");
+if(kategorien.some(k=>k.toLowerCase()===name.toLowerCase()))
+return alert("Kategorie bereits vorhanden.");
+kategorien.push(name);
+input.value="";
+zeichnen();
+}
+function produktHinzufuegen(){
+const name=document.getElementById("produktName").value.trim();
+const kat=Number(document.getElementById("produktKategorie").value);
+const cent=preisZuCent(document.getElementById("produktPreis").value);
+const beschreibung=document.getElementById("produktBeschreibung").value.trim();
+if(!name)return alert("Bitte Produktnamen eingeben.");
+if(!Number.isInteger(kat)||kat<0||kat>=kategorien.length)
+return alert("Bitte Kategorie auswählen.");
+if(cent===null)return alert("Bitte gültigen Preis eingeben.");
+produkte.push({name,kat,cent,beschreibung,aktiv:true});
+document.getElementById("produktName").value="";
+document.getElementById("produktPreis").value="";
+document.getElementById("produktBeschreibung").value="";
+zeichnen();
+}
+zeichnen();
+</script>
+</body>
+</html>
